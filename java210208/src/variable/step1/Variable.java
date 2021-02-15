@@ -37,5 +37,5 @@ public class Variable {
 		System.out.print("   ");//줄바꿈 안됨
 		System.out.println();//줄바꿈 추가된 메소드
 	}
-
+	//gittest
 }
