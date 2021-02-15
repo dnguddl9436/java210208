@@ -29,7 +29,7 @@ public class Variable {
 		//System.out.print();//줄바꿈 안됨- 반환값이 없으니까 에러인거야? 출력결과물
 		Variable v = new Variable();
 		System.out.print(v.methodB(1));
-		System.out.print(v.methodA(1));
+		System.out.print(v.methodA(1));//methodA()가 void라 오류발생
 		System.out.print(1+"   "+1);//줄바꿈 안됨
 		System.out.print(10+10);//줄바꿈 안됨
 		System.out.print(10+"10");//줄바꿈 안됨
