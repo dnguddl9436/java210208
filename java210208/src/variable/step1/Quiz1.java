@@ -9,7 +9,7 @@ public class Quiz1 {
 	public static void main(String[] args) {
 		Quiz1 q = new Quiz1();
 		System.out.println("methodA(int x)호출 성공 =========> "+q.x);
-		q.methodA(3);//다음 문법 에러를 해결하시오.
+		q.methodA(1);//다음 문법 에러를 해결하시오.
 		q.methodA(1);//다음 문법 에러를 해결하시오.
 	}
 //methodA의 호출이 선언 앞에 오더라도 에러가 아님.
