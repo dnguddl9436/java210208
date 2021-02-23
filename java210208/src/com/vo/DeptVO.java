@@ -38,10 +38,10 @@ public class DeptVO {
 		//this는 나 자신을 가리키는 수정자이다. 여기서는 지변과 식별을 위해 사용하였다. 생략할 수 있다. 그런데 헷갈린다.
 		this.deptno = deptno;
 	}
-	public String getDename() {
+	public String getDname() {
 		return dename;
 	}
-	public void setDename(String dename) {//지변
+	public void setDname(String dename) {//지변
 		this.dename = dename;
 	}
 	public String getLoc() {
