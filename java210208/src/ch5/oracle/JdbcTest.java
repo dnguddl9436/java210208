@@ -22,7 +22,7 @@ public class JdbcTest {
 	String				_PW		= "tiger";
 	//물리적으로 떨어져 있는 서버에 연결통로 만들기
 	Connection			con		= null;
-	//24번 서버에 내가 작성ㅎ산 select문을 전달해줄 객체 선언
+	//24번 서버에 내가 작성한 select문을 전달해줄 객체 선언
 	PreparedStatement	pstmt	= null;
 	//오라클의 커서를 조작하는 객체 선언
 	ResultSet			rs		= null;
