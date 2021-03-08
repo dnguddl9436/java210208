@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class BaseBallGameView {
 	boolean used[] = new boolean[10];
 	int n = 3;
-	int ball[] = new int[n];
+	int com[] = new int[n];
 	String user = null;
 	Random r = new Random();
 	Scanner sc = new Scanner(System.in);
@@ -16,31 +16,31 @@ public class BaseBallGameView {
 			bg.used[i] = false;
 	}
 
-	public void makeBall(BaseBallGameView bg) {
+	public void makeCom(BaseBallGameView bg) {
 		int cnt = 0;
 		bg.initUsed(bg);
 		do {
-			bg.ball[cnt] = r.nextInt(10);
-			if (!bg.used[bg.ball[cnt]])
-				bg.used[bg.ball[cnt++]] = true;
+			bg.com[cnt] = r.nextInt(10);
+			if (!bg.used[bg.com[cnt]])
+				bg.used[bg.com[cnt++]] = true;
 		} while (cnt < bg.n);
 	}
 
 	public void printBall(BaseBallGameView bg) {
 		for (int i = 0; i < bg.n; i++)
-			System.out.print(bg.ball[i]);
+			System.out.print(bg.com[i]);
 	}
 
 	public void run(BaseBallGameView bg) {
 		int strike, ball;
-		bg.makeBall(bg);
+		bg.makeCom(bg);
 		do {
 			strike = 0;
 			ball = 0;
 			System.out.print("세 자리 숫자를 입력하세요: ");
 			bg.user = sc.nextLine();
 			for (int i = 0; i < n; i++) {
-				if (bg.ball[i] == bg.user.charAt(i)-'0') {
+				if (bg.com[i] == bg.user.charAt(i)-'0') {
 					strike++;
 				} else if (used[bg.user.charAt(i)-'0']) {
 					ball++;
