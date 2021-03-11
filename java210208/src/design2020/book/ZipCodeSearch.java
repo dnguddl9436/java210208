@@ -1,4 +1,4 @@
-package com.design.zipcode;
+package design2020.book;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import com.util.DBConnectionMgr;
+import com.design.zipcode.MemberShip;
+import com.design.zipcode.ZipCodeVO;
 /*
  * dispose에 대한 설명임
  * 이 Window, 하위 구성 요소 및 모든 소유 된 하위 구성 요소에서 사용하는 모든 기본 화면 리소스를
@@ -49,6 +51,11 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 	//선언부
 	String zdo = null;
 	//물리적으로 떨어져 있는 db서버와 연결통로 만들기
+	Connection 			con 	= null;
+	//위에서 연결되면 쿼리문을 전달할 전령의 역할을 하는 인터페이스 객체 생성하기
+	PreparedStatement 	pstmt 	= null;
+	//조회된 결과를 화면에 처리해야 하므로 오라클에 커서를 조작하기 위해 ResultSet추가
+	ResultSet 			rs 		= null;
 	JPanel jp_north = new JPanel();
 	//insert here
 	String zdos[] = {"전체","서울","경기","강원"};
@@ -114,8 +121,6 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 	}
 	//메인메소드
 	public static void main(String[] args) {
-		ZipCodeSearchConsole zcs = new ZipCodeSearchConsole();
-		zcs.initDisplay();
 	}
 	@Override
 	public void focusGained(FocusEvent e) {
@@ -131,9 +136,8 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 	}
 	public String[] getZdoList() {
 		//원격에 있는 오라클 서버에 접속하기 위해 DBConnectionMgr객체 생성하기
-		//콤보 박스에 대한 정보를 가져오기
 		try {
-
+			DBConnectionMgr dbMgr = DBConnectionMgr.getInstance();
 		} catch (Exception e) {
 			System.out.println("Exceptioin : "+e.toString());
 		}
@@ -143,6 +147,9 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 		System.out.println("zdo:"+zdo+", dong:"+dong);
 		try {
 			
+		} catch (SQLException se) {
+			System.out.println(se.toString());
+			System.out.println("[[query]]=="+sql.toString());
 		} catch (Exception e) {
 			System.out.println(e.toString());			
 		}
