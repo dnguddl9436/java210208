@@ -43,7 +43,7 @@ Window 및 / 또는 해당 소유자가 아직 표시 가능하지 않은 경우
 false이면이 Window, 하위 구성 요소 및 모든 소유 자식을 숨 깁니다. Window 및 해당 하위 구성
 요소는 #setVisible (true)를 호출하여 다시 표시 할 수 있습니다.
  */
-public class ZipCodeSearch extends JFrame implements MouseListener
+public class ZipCodeSearchVer2 extends JFrame implements MouseListener
                                                    , ItemListener
                                                    , FocusListener
                                                    , ActionListener {
@@ -69,11 +69,16 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 			,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	String zdos3[] = null;
 	MemberShip memberShip = null;
+	//DB연동에 필요한 선언
+	DBConnectionMgr 	dbMgr 	= DBConnectionMgr.getInstance();
+	Connection			con		= null;
+	PreparedStatement	pstmt	= null;
+	ResultSet			rs		= null;
 	//생성자
-	public ZipCodeSearch() {
+	public ZipCodeSearchVer2() {
 		zdos3 = getZdoList();
 	}
-	public ZipCodeSearch(MemberShip memberShip) {
+	public ZipCodeSearchVer2(MemberShip memberShip) {
 		this();
 		this.memberShip = memberShip;
 	}
@@ -113,10 +118,46 @@ public class ZipCodeSearch extends JFrame implements MouseListener
 		this.setSize(430, 400);
 		this.setVisible(true);
 	}
+	//콤보박스에 뿌려질 ZDO컬럼의 정보를 오라클 서버에서 꺼내오기
+	public String[] getZDOList() {
+		String zdos[] = null;
+		//오라클 서버에 보낼 select문 작성하기
+		//String자체는 원본이 바뀌지 않는 특성을 가진다.
+		//StringBuilder는 단일 스레드 안전하고
+		//StringBuffer는 다중 스레드 안전하다.
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT '전체' zdo FROM dual       ");
+		sb.append("UNION ALL                         ");
+		sb.append("SELECT zdo                        ");
+		sb.append("  FROM (                          ");
+		sb.append("        SELECT distinct(zdo) zdo  ");
+		sb.append("          FROM zipcode_t          ");
+		sb.append("        ORDER BY zdo asc          ");
+		sb.append("       )                          ");
+		try {
+			con = dbMgr.getConnection();
+			pstmt = con.prepareStatement(sb.toString());
+			rs = pstmt.executeQuery();
+			Vector<String> v = new Vector<>();
+			List<String> v2 = new Vector<>();
+			while(rs.next()) {
+				String zdo = rs.getString("zdo");
+				v.add(zdo);
+			}
+			zdos = new String[v.size()];
+			v.copyInto(zdos);
+			v2.copyInto(zdos);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			
+		}
+		return zdos;
+	}
 	//메인메소드
 	public static void main(String[] args) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		ZipCodeSearch zcs = new ZipCodeSearch();
+		ZipCodeSearchVer2 zcs = new ZipCodeSearchVer2();
 		zcs.initDisplay();
 	}
 	@Override

@@ -1,5 +1,6 @@
 package com.util;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,6 +59,14 @@ public class DBConnectionMgr {
    public void freeConnection(Connection con, PreparedStatement pstmt) {
       try {
          if(pstmt !=null) pstmt.close();
+         if(con !=null) con.close();
+      } catch (Exception e) {
+         // TODO: handle exception
+      }
+   }
+   public void freeConnection(Connection con, CallableStatement cstmt) {
+      try {
+         if(cstmt !=null) cstmt.close();
          if(con !=null) con.close();
       } catch (Exception e) {
          // TODO: handle exception
