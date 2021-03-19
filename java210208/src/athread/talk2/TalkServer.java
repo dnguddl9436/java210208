@@ -20,13 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class TomatoServer extends JFrame implements Runnable{
-	//사용자가 접속을 해올 때 마다(입장) 새로 객체를 생성해야 함.- 왜냐하면 서로 다른 사람이니까 그 사람의 소켓, 그 사람의 ois, 그 만의 oos
-	TomatoServerThread 		tst 		= null;
-	//Vector로 선언하지 않는 이유는 다형성을 말하기 위함.
-	//내 안에 강감찬 스레드 관리, 이순신 스레드 관리
-	List<TomatoServerThread> 	globalList 	= null;
-	List<Room>				roomList	= null;
+public class TalkServer extends JFrame implements Runnable{
+	TalkServerThread 		tst 		= null;
+	List<TalkServerThread> 	globalList 	= null;
 	ServerSocket 			server 		= null;
 	Socket 					socket 		= null;
 	JTextArea 				jta_log = new JTextArea(10,30);
@@ -36,26 +32,6 @@ public class TomatoServer extends JFrame implements Runnable{
 	JPanel 		jp_north = new JPanel();
 	JButton 	jbtn_log = new JButton("로그저장");
 	String      logPath  = "src\\athread\\talk\\";
-	
-	//서버소켓과 클라이언트측 소켓을 연결하기
-	@Override
-	public void run() {
-		//서버에 접속해온 클라이언트 스레드 정보를 관리할 벡터 생성하기 
-		globalList = new Vector<>();
-		boolean isStop = false;
-		try {
-			server = new ServerSocket(3002);
-			jta_log.append("Server Ready.........\n");
-			while(!isStop) {
-				socket = server.accept();
-				jta_log.append("client info:"+socket+"\n");				
-				tst = new TomatoServerThread(this);
-				tst.start();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	public void initDisplay() {
 		jbtn_log.addActionListener(new ActionListener() {
 			@Override
@@ -95,12 +71,33 @@ public class TomatoServer extends JFrame implements Runnable{
 		this.setVisible(true);
 		
 	}
-	public static void main(String args[]) {
-		TomatoServer ts = new TomatoServer();
+	//서버소켓과 클라이언트측 소켓을 연결하기
+	@Override
+	public void run() {
+		//서버에 접속해온 클라이언트 스레드 정보를 관리할 벡터 생성하기 
+		globalList = new Vector<>();
+		boolean isStop = false;
+		try {
+			server = new ServerSocket(3002);
+			jta_log.append("Server Ready.........\n");
+			while(!isStop) {
+				socket = server.accept();
+				jta_log.append("client info:"+socket+"\n");				
+				TalkServerThread tst = new TalkServerThread(this);
+				tst.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		TalkServer ts = new TalkServer();
 		ts.initDisplay();
 		Thread th = new Thread(ts);
 		th.start();
 	}
+
 	/*******************************************************
 	 * 시스템의 오늘 날짜 정보 가져오기
 	 * @param 해당사항 없음.

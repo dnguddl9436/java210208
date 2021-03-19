@@ -5,14 +5,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public class TomatoServerThread extends Thread {
-	TomatoServer ts = null;
+import thread.bank.Protocol;
+
+public class TalkServerThread extends Thread {
+	public TalkServer ts = null;
 	Socket client = null;
 	ObjectOutputStream oos = null;
 	ObjectInputStream ois = null;
 	String chatName = null;//현재 서버에 입장한 클라이언트 스레드 닉네임 저장
-	
-	public TomatoServerThread(TomatoServer ts) {
+	public TalkServerThread(TalkServer ts) {
 		this.ts = ts;
 		this.client = ts.socket;
 		try {
@@ -24,7 +25,7 @@ public class TomatoServerThread extends Thread {
 			st.nextToken();//100
 			chatName = st.nextToken();
 			ts.jta_log.append(chatName+"님이 입장하였습니다.\n");
-			for(TomatoServerThread tst:ts.globalList) {
+			for(TalkServerThread tst:ts.globalList) {
 			//이전에 입장해 있는 친구들 정보 받아내기
 				//String currentName = tst.chatName;
 				this.send(100+"#"+tst.chatName);
@@ -35,10 +36,10 @@ public class TomatoServerThread extends Thread {
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-	}//////////////[[end of TomatoServerThread]]///////////////
+	}
 	//현재 입장해 있는 친구들 모두에게 메시지 전송하기 구현
 	public void broadCasting(String msg) {
-		for(TomatoServerThread tst:ts.globalList) {
+		for(TalkServerThread tst:ts.globalList) {
 			tst.send(msg);
 		}
 	}
@@ -79,7 +80,14 @@ public class TomatoServerThread extends Thread {
 								   +"#"+message);
 					}break;
 					case 202:{
-
+						String nickName = st.nextToken();
+						String afterName = st.nextToken();
+						String message = st.nextToken();
+						this.chatName = afterName;
+						broadCasting(202
+								+"#"+nickName
+								+"#"+afterName
+        						+"#"+message);
 					}break;
 					case 500:{
 						String nickName = st.nextToken();

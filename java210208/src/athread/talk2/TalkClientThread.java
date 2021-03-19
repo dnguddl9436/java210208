@@ -3,17 +3,14 @@ package athread.talk2;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-/**********************************************
- * 이벤트 핸들러의 역할은 말하기이고
- * 클라이언트측의 스레드 역할은 듣기이다.
- * @param tomatoClient
- **********************************************/
-public class TomatoClientThread extends Thread{
-	TomatoClient tc = null;
-	public TomatoClientThread(TomatoClient tc) {
+public class TalkClientThread extends Thread {
+	TalkClient tc = null;
+	public TalkClientThread(TalkClient tc) {
 		this.tc = tc;
 	}
-	@Override
+	/*
+	 * 서버에서 말한 내용을 들어봅시다.
+	 */
 	public void run() {
 		boolean isStop = false;
 		while(!isStop) {
@@ -80,17 +77,5 @@ public class TomatoClientThread extends Thread{
 				// TODO: handle exception
 			}
 		}////////////////////end of while
-	}
-	/*
-	@Override
-	public synchronized void run() {
-		
-	}
-	@Override
-	public void run() {
-		synchronized(this) {
-			
-		}
-	}
-	*/
+	}////////////////////////end of run
 }

@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class TomatoClient extends JFrame implements ActionListener {
+public class TalkClient extends JFrame implements ActionListener {
 	////////////////통신과 관련한 전역변수 추가 시작//////////////
 	Socket 				socket 	= null;
 	ObjectOutputStream 	oos 	= null;//말 하고 싶을 때
@@ -48,7 +48,7 @@ public class TomatoClient extends JFrame implements ActionListener {
 	JScrollPane jsp_display = null;
 	//배경 이미지에 사용될 객체 선언-JTextArea에 페인팅
 	Image back = null;
-	public TomatoClient() {
+	public TalkClient() {
 		jtf_msg.addActionListener(this);
 		jbtn_exit.addActionListener(this);
 		jbtn_change.addActionListener(this);
@@ -93,14 +93,9 @@ public class TomatoClient extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 	public static void main(String args[]) {
-		//swing skin사용
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		//메인 스레드 우선권
-		TomatoClient tc = new TomatoClient();
-		//화면 부름
+		TalkClient tc = new TalkClient();
 		tc.initDisplay();
-		//소켓생성 - TS쪽 ServerSocket감지 - 일반 소켓 전달됨. - run메소드 안에서 - TomatoServerThread생성
-		//생성자 호출(this) - 듣기 가능해짐. - 전제 조건, oos, ois, 소켓객체 있어야 가능함.
 		tc.init();
 	}
 	//소켓 관련 초기화
@@ -108,18 +103,13 @@ public class TomatoClient extends JFrame implements ActionListener {
 		try {
 			//서버측의 ip주소 작성하기
 			socket = new Socket("127.0.0.1",3002);
-			//TS ServerSocket감지 -> client = server.accept(); //클라이언트 소켓에 대한 정보 갖음.
-			//홀수 소켓에 대한 처리
 			oos = new ObjectOutputStream(socket.getOutputStream());
-			//짝수 소켓에 대한 처리
 			ois = new ObjectInputStream(socket.getInputStream());
 			//initDisplay에서 닉네임이 결정된 후 init메소드가 호출되므로
 			//서버에게 내가 입장한 사실을 알린다.(말하기)
-			oos.writeObject(100+"#"+nickName);//말했잖아
-			//TomatoServerThread의 생성자가 듣기
-			//서버에 말을 한 후 들을 준비를 한다. - 대기 탄다 - 듣기 - 프로토콜을 비교해야 한다.
-			//프로토콜 설계하기 - ERD 그린다.- 데이터 클래스 설계 - List, Map 단위테스트 너가 해줄래
-			TomatoClientThread tct = new TomatoClientThread(this);
+			oos.writeObject(100+"#"+nickName);
+			//서버에 말을 한 후 들을 준비를 한다.
+			TalkClientThread tct = new TalkClientThread(this);
 			tct.start();
 		} catch (Exception e) {
 			//예외가 발생했을 때 직접적인 원인되는 클래스명 출력하기
@@ -153,7 +143,21 @@ public class TomatoClient extends JFrame implements ActionListener {
 			}
 		}
 		else if(jbtn_change == obj) {
-
+			String afterName = JOptionPane.showInputDialog("변경할 대화명을 입력하세요.");
+			if(afterName == null || afterName.trim().length()<1) {
+				JOptionPane.showMessageDialog(this
+				, "변경할 대화명을 입력하세요"
+				, "INFO", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			try {
+				oos.writeObject(202
+						   +"#"+nickName
+						   +"#"+afterName
+						   +"#"+nickName+"의 대화명이 "+afterName+"으로 변경되었습니다.");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 	}//////////////////////end of actionPerformed
 }
