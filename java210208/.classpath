@@ -4,5 +4,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/gson-2.8.6.jar"/>
 	<classpathentry kind="lib" path="D:/app/dngud/product/11.1.0/db_1/jdbc/lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/spring-beans-4.3.30.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/spring-context-4.3.30.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/spring-core-4.3.30.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/spring-expression-4.3.30.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
