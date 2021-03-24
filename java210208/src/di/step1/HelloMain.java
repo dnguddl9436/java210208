@@ -40,7 +40,8 @@ public class HelloMain {
 		Sonata herCar = (Sonata)context2.getBean("herCar");
 		System.out.println(himCar);
 		System.out.println(herCar);
-		Resource resource = new FileSystemResource("D:\\git_java210208_2\\java210208\\java210208\\src\\di\\step1\\helloBean.xml");
+		//Resource resource = new FileSystemResource("D:\\git_java210208_2\\java210208\\java210208\\src\\di\\step1\\helloBean.xml");
+		Resource resource = new FileSystemResource("E:\\git_java210208\\java210208\\java210208\\src\\di\\step1\\helloBean.xml");
 		BeanFactory factory = new XmlBeanFactory(resource);
 		HelloBean helloBean2 = (HelloBean)factory.getBean("helloBean222");
 		HelloBean helloBean = (HelloBean)context.getBean("helloBean222");

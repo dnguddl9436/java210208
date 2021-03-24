@@ -21,7 +21,7 @@ public class HelloBeanImpl implements HelloBean {
 	}
 	//Bean이 소멸되기 전에 호출되는 메소드
 	public void destroyMethod() {
-		System.out.println("initMethod 호출 성공");
+		System.out.println("destroyMethod 호출 성공");
 	}
 
 }
