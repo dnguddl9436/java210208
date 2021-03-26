@@ -39,7 +39,7 @@ public class MemberShip extends JDialog implements ActionListener{
 	ZipCodeSearchConsole zcs = new ZipCodeSearchConsole();
 	//생성자
 	public MemberShip(){
-		initDisplay();
+		//initDisplay();
 	}
 	//화면처리부
 	public void initDisplay() {

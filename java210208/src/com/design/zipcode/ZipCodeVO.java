@@ -1,6 +1,7 @@
 package com.design.zipcode;
 
 public class ZipCodeVO {      
+	private Boolean ChkBox	 = null;
 	private int 	uid_no	 = 0;//유니크한 순번
 	private int 	zipcode	 = 0;//우편번호
 	private String 	zdo		 = null;//시도
