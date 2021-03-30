@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/spring-expression-4.3.30.RELEASE.jar"/>
 	<classpathentry kind="lib" path="C:/mybatis-3.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/javax.mail-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
