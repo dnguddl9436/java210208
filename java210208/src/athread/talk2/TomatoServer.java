@@ -20,13 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import athread.talk1.TalkServerThread;
+
 public class TomatoServer extends JFrame implements Runnable{
-	//사용자가 접속을 해올 때 마다(입장) 새로 객체를 생성해야 함.- 왜냐하면 서로 다른 사람이니까 그 사람의 소켓, 그 사람의 ois, 그 만의 oos
-	TomatoServerThread 		tst 		= null;
+	//사용자가 접속을 해올 때 마다(입장) 새로 객체를 생성해야 함.- 왜냐하면 서로 다른 사람이니까 그사람의 소켓, 그사람의 ois, 그만의 oos
+	TomatoServerThread 			tst 		= null;
 	//Vector로 선언하지 않는 이유는 다형성을 말하기 위함.
-	//내 안에 강감찬 스레드 관리, 이순신 스레드 관리
+	//내안에 강감찬 스레드 관리, 이순신 스레드 관리
 	List<TomatoServerThread> 	globalList 	= null;
-	List<Room>				roomList	= null;
+	List<Room>              roomList    = null;
 	ServerSocket 			server 		= null;
 	Socket 					socket 		= null;
 	JTextArea 				jta_log = new JTextArea(10,30);
@@ -35,7 +37,7 @@ public class TomatoServer extends JFrame implements Runnable{
 			                                         ,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	JPanel 		jp_north = new JPanel();
 	JButton 	jbtn_log = new JButton("로그저장");
-	String      logPath  = "src\\athread\\talk\\";
+	String      logPath  = "src\\athread\\talk2\\";
 	
 	//서버소켓과 클라이언트측 소켓을 연결하기
 	@Override
@@ -48,14 +50,15 @@ public class TomatoServer extends JFrame implements Runnable{
 			jta_log.append("Server Ready.........\n");
 			while(!isStop) {
 				socket = server.accept();
-				jta_log.append("client info:"+socket+"\n");				
-				tst = new TomatoServerThread(this);
-				tst.start();
+				jta_log.append("client info:"+socket+"\n");//유저의 정보		
+				tst = new TomatoServerThread(this);//TST
+				tst.start();//run호출
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	public void initDisplay() {
 		jbtn_log.addActionListener(new ActionListener() {
 			@Override
@@ -100,6 +103,7 @@ public class TomatoServer extends JFrame implements Runnable{
 		ts.initDisplay();
 		Thread th = new Thread(ts);
 		th.start();
+		
 	}
 	/*******************************************************
 	 * 시스템의 오늘 날짜 정보 가져오기
@@ -115,4 +119,5 @@ public class TomatoServer extends JFrame implements Runnable{
 			   (mm < 10 ? "0"+mm:""+mm)+"-"+
 			   (day < 10 ? "0"+day:""+day);
 	}////////////////end of setTimer
+	
 }

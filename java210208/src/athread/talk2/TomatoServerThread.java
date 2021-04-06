@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public class TomatoServerThread extends Thread {
+public class TomatoServerThread extends Thread{
 	TomatoServer ts = null;
 	Socket client = null;
 	ObjectOutputStream oos = null;
@@ -14,32 +14,35 @@ public class TomatoServerThread extends Thread {
 	
 	public TomatoServerThread(TomatoServer ts) {
 		this.ts = ts;
+
 		this.client = ts.socket;
 		try {
-			oos = new ObjectOutputStream(client.getOutputStream());
-			ois = new ObjectInputStream(client.getInputStream());
-			String msg = (String)ois.readObject();
-			ts.jta_log.append(msg+"\n");
-			StringTokenizer st = new StringTokenizer(msg,"#");
-			st.nextToken();//100
-			chatName = st.nextToken();
+			oos = new ObjectOutputStream(client.getOutputStream());//홀수 소켓
+			ois = new ObjectInputStream(client.getInputStream());//짝수 소켓
+			//130#은영[청취]
+			String msg = (String)ois.readObject();//듣기
+			ts.jta_log.append(msg+"\n");//서버 출력
+			StringTokenizer st = new StringTokenizer(msg,"#");//자르기
+			st.nextToken();//130
+			chatName = st.nextToken();//은영
 			ts.jta_log.append(chatName+"님이 입장하였습니다.\n");
-			for(TomatoServerThread tst:ts.globalList) {
+			for(TomatoServerThread tst:ts.globalList) {//은영한테만 간다 130#희태
 			//이전에 입장해 있는 친구들 정보 받아내기
 				//String currentName = tst.chatName;
-				this.send(100+"#"+tst.chatName);
+				this.send(Protocol.ROOM_IN+"#"+tst.chatName);
 			}
 			//현재 서버에 입장한 클라이언트 스레드 추가하기
-			ts.globalList.add(this);
-			this.broadCasting(msg);
+			ts.globalList.add(this);//앞에 for문은 안타고  스레드 추가됨.
+			this.broadCasting(msg);//방송 - 1명에게만 전송
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-	}//////////////[[end of TomatoServerThread]]///////////////
+	}//////////////////// [[end of TomatoServerThread]] //////////////////
+
 	//현재 입장해 있는 친구들 모두에게 메시지 전송하기 구현
 	public void broadCasting(String msg) {
-		for(TomatoServerThread tst:ts.globalList) {
-			tst.send(msg);
+		for(TomatoServerThread tst:ts.globalList) {//globalList.size()=1-> 2
+			tst.send(msg);//은영<- 130#희태, 희태- 130#희태
 		}
 	}
 	//클라이언트에게 말하기 구현
@@ -68,20 +71,25 @@ public class TomatoServerThread extends Thread {
 					protocol = Integer.parseInt(st.nextToken());//100
 				}
 				switch(protocol) {
-					case 200:{
-						
-					}break;
-					case 201:{
+					case Protocol.MESSAGE:{
 						String nickName = st.nextToken();
 						String message = st.nextToken();
 						broadCasting(201
 								   +"#"+nickName
 								   +"#"+message);
 					}break;
-					case 202:{
-
+					case Protocol.CHANGE:{//300#하하#하늘소
+						String nickName = st.nextToken();
+						String afterName = st.nextToken();
+						String msg1 = st.nextToken();
+						this.chatName = afterName;//서버측 이름과 동기화 주의할것.
+						broadCasting(Protocol.CHANGE
+								    +Protocol.seperator+nickName
+								    +Protocol.seperator+afterName
+								    +Protocol.seperator+msg1
+								    );
 					}break;
-					case 500:{
+					case Protocol.ROOM_OUT:{
 						String nickName = st.nextToken();
 						ts.globalList.remove(this);
 						broadCasting(500
