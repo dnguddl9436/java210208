@@ -1,15 +1,36 @@
 package mvc.address;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
-public class AddressBook extends JFrame {
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+import javax.swing.table.DefaultTableModel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.xml.XmlConfigurationFactory;
+
+public class AddressBook extends JFrame {
+	Logger logger = LogManager.getLogger(AddressBook.class);
 	// 메인화면에 사용할 컴포넌트들을 선언합니다.
     private JMenuBar menuBar;
     private JMenu menuMenu;
@@ -46,6 +67,7 @@ public class AddressBook extends JFrame {
 
 	// 메인 메쏘드는 AddressBook의 인스턴스를 생성하고 보여주는 일만 합니다.
     public static void main(String args[]) {
+    	System.setProperty(XmlConfigurationFactory.CONFIGURATION_FILE_PROPERTY, "log4j.xml");
         abook = new AddressBook();
         abook.setVisible(true);
     }
@@ -109,7 +131,7 @@ public class AddressBook extends JFrame {
 		menuItemConnect.setText("DB 연결");
 		menuItemConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-                System.out.println("DB 연결 메뉴");
+                logger.info("DB 연결 메뉴");
                 connectActionPerformed(evt);
 			}
 		});
@@ -119,8 +141,8 @@ public class AddressBook extends JFrame {
         menuItemAll.setText("전체조회");
         menuItemAll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("전체 조회 메뉴");
-                allActionPerformed();
+                logger.info("전체 조회 메뉴");
+                refreshData();
             }
         });
 
@@ -129,7 +151,7 @@ public class AddressBook extends JFrame {
         menuItemDetail.setText("상세조회");
         menuItemDetail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("조회 메뉴");
+                logger.info("조회 메뉴");
                 detailActionPerformed();
             }
         });
@@ -139,7 +161,7 @@ public class AddressBook extends JFrame {
         menuItemInsert.setText("입력");
         menuItemInsert.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("입력 메뉴");
+                logger.info("입력 메뉴");
                 addActionPerformed(evt);
             }
         });
@@ -149,7 +171,7 @@ public class AddressBook extends JFrame {
         menuItemUpdate.setText("수정");
         menuItemUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("수정 메뉴");
+                logger.info("수정 메뉴");
             	AddressVO vo = new AddressVO();
             	updateActionPerformed(vo);
             }
@@ -160,7 +182,7 @@ public class AddressBook extends JFrame {
         menuItemDelete.setText("삭제");
         menuItemDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("삭제 메뉴");
+            	logger.info("삭제 메뉴");
             	deleteActionPerformed();
             }
         });
@@ -170,7 +192,7 @@ public class AddressBook extends JFrame {
         menuItemExit.setText("종료");
         menuItemExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("종료 메뉴");
+            	logger.info("종료 메뉴");
             	exitActionPerformed(evt);
             }
         });
@@ -198,7 +220,7 @@ public class AddressBook extends JFrame {
 		menuItemAbout.setText("About");
 		menuItemAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("About 메뉴");
+				logger.info("About 메뉴");
 				aboutActionPerformed(evt);
 			}
 		});
@@ -217,7 +239,7 @@ public class AddressBook extends JFrame {
 		// 윈도우 리스너 설정
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
-            	System.out.println("윈도우 종료");
+            	logger.info("윈도우 종료");
             	System.exit(0);
             }
         });
@@ -226,7 +248,7 @@ public class AddressBook extends JFrame {
 		btnDetail.setIcon(new ImageIcon(path+"detail.gif"));
         btnDetail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("조회 아이콘");
+            	logger.info("조회 아이콘");
             	detailActionPerformed();
             }
         });
@@ -237,7 +259,7 @@ public class AddressBook extends JFrame {
         btnInsert.setIcon(new ImageIcon(path+"new.gif"));
         btnInsert.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("입력 아이콘");
+            	logger.info("입력 아이콘");
             	addActionPerformed(evt);
             }
         });
@@ -247,7 +269,7 @@ public class AddressBook extends JFrame {
         btnUpdate.setIcon(new ImageIcon(path+"update.gif"));
 		btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("수정 아이콘");
+            	logger.info("수정 아이콘");
             	AddressVO vo = new AddressVO();
             	updateActionPerformed(vo);
             }
@@ -258,7 +280,7 @@ public class AddressBook extends JFrame {
         btnDelete.setIcon(new ImageIcon(path+"delete.gif"));
 		btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	System.out.println("삭제 아이콘");
+            	logger.info("삭제 아이콘");
             	deleteActionPerformed();
             }
         });
@@ -272,7 +294,7 @@ public class AddressBook extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() >= 2) {
-					System.out.println("데이타 더블클릭");
+					logger.info("데이타 더블클릭");
 					detailActionPerformed();
 				}
 			}
@@ -309,12 +331,6 @@ public class AddressBook extends JFrame {
 		}
     }
 
-	protected void allActionPerformed() {
-		System.out.println("전체 조회 버튼 클릭");
-		AddressCtrl actrl = new AddressCtrl();
-		actrl.sendAll();
-	}
-
 	// DB연결 메뉴 선택시 작업을 정의합니다.
 	private void connectActionPerformed(ActionEvent evt) {
 
@@ -343,7 +359,21 @@ public class AddressBook extends JFrame {
 
 	// 삭제 메뉴나 삭제 아이콘 선택시 작업을 정의합니다.
 	private void deleteActionPerformed() {
-
+		int index[] = table.getSelectedRows();
+		AddressVO pVO = new AddressVO();
+		for(int i=0;i<myTableModel.getRowCount();i++) {
+			if(table.isRowSelected(i)) {
+				Integer id = Integer.parseInt((String)myTableModel.getValueAt(i, 0));
+				pVO.setId(id);
+				pVO.setCommand("delete");
+				ctrl = new AddressCtrl();
+				try {
+					ctrl.send(pVO);
+				} catch (Exception e) {
+					logger.info("Exception:"+e.toString());
+				}
+			}
+		}
 	}
 
 	// 종료 메뉴 선택시 작업을 정의합니다.
@@ -359,11 +389,14 @@ public class AddressBook extends JFrame {
 	}
 
 	// 전체 데이터를 다시 조회합니다.
-	public void refreshData() throws Exception {
+	public void refreshData() {
+		//이미 테이블에 보여지는 데이터가 있는 경우 모두 삭제합니다.
+		while(myTableModel.getRowCount() > 0) {
+			myTableModel.removeRow(0);
+		}
 		AddressVO paVO = new AddressVO();
 		paVO.setCommand("selectall");
 		AddressCtrl abCtrl = new AddressCtrl();
-		AddressVO[] aVOS = abCtrl.send();
 		List<AddressVO> list = abCtrl.sendAll();
 	}
 
