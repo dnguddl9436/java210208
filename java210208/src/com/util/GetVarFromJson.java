@@ -8,6 +8,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class GetVarFromJson {
+	private static GetVarFromJson gvfj = null;
+	GetVarFromJson() {}
+	public static GetVarFromJson getInstance() {
+		if (gvfj == null) {
+			gvfj = new GetVarFromJson();
+		}
+		return gvfj;
+	}
 	public String getVar(String path, String key) {
 		String var = null;
 		try {

@@ -1,6 +1,12 @@
 package naver.captcha;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,12 +14,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.util.GetVarFromJson;
+
 // 네이버 캡차 API 예제 - 캡차 이미지 수신
 public class ApiExamCaptchaImage {
+	private String path = "C:\\NaverAPI.txt";
+	GetVarFromJson gvfj = GetVarFromJson.getInstance();
 	public ApiExamCaptchaImage(String key) {
 		key = key.substring(8,24);
-        String clientId = "g2prVgrLguMayiSH2wNH"; //애플리케이션 클라이언트 아이디값";
-        String clientSecret = "3KIBaJ4VSQ"; //애플리케이션 클라이언트 시크릿값";
+        String clientId = gvfj.getVar(path, "ID"); //애플리케이션 클라이언트 아이디값";
+        String clientSecret = gvfj.getVar(path, "SECRET"); //애플리케이션 클라이언트 시크릿값";
 
         String apiURL = "https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=" + key;
 

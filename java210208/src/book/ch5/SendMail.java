@@ -17,13 +17,13 @@ import javax.mail.internet.MimeMessage;
 public class SendMail {
 	public static void main(String[] args) {
 		String smtpServer = "smtp.naver.com";
-		final String sendId = "dnguddl9436";
+		final String sendId = "id";
 		final String sendPass = "password";
-		String sendEmailAddress = "dnguddl9436@naver.com";
+		String sendEmailAddress = "from@naver.com";
 		int smtpPort=465;
 		
 		//받는 분
-		String receiveEmailAddress="dnguddl9696@gmail.com";
+		String receiveEmailAddress="to@gmail.com";
 		String subject="안녕하세요. 강감찬입니다.";
 		String content="안녕하세요. 학습용3으로 이메일 보내기3 연습 중입니다.";
 		

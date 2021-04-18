@@ -10,12 +10,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.util.GetVarFromJson;
+
 public class ApiExamCaptchaNkey {
-//ID - 5NNeHasY7KCWoMGm0suJ
-//SECRET - 4zvlywLkoc
+	private static String path = "C:\\NaverAPI.txt";
+	static GetVarFromJson gvfj = GetVarFromJson.getInstance();
 	   public static void main(String[] args) {
-	        String clientId = "g2prVgrLguMayiSH2wNH"; //애플리케이션 클라이언트 아이디값";
-	        String clientSecret = "3KIBaJ4VSQ"; //애플리케이션 클라이언트 시크릿값";
+	        String clientId = gvfj.getVar(path, "ID"); //애플리케이션 클라이언트 아이디값";
+	        String clientSecret = gvfj.getVar(path, "SECRET"); //애플리케이션 클라이언트 시크릿값";
 
 	        String code = "0"; // 키 발급시 0,  캡차 이미지 비교시 1로 세팅
 	        String apiURL = "https://openapi.naver.com/v1/captcha/nkey?code=" + code;
