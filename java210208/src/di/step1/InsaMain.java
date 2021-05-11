@@ -9,6 +9,8 @@ public class InsaMain {
 		ApplicationContext context2 = 
 				new ClassPathXmlApplicationContext("di\\step1\\insaBean.xml");
 		InsaList insaList = (InsaList)context2.getBean("insa");
+		InsaMap mapBean = (InsaMap)context2.getBean("insaMap");
+		System.out.println("mapBean ==> "+mapBean);
 		System.out.println(insaList);
 		System.out.println(insaList.insaBean);
 		for(String s:insaList.insaBean) {
