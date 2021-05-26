@@ -33,7 +33,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import com.util.DBConnectionMgr;
 
 public class Exam3 extends JFrame implements MouseListener, ItemListener, FocusListener, ActionListener {
 	String zdo = null;
